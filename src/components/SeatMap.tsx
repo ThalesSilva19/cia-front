@@ -166,7 +166,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                             </button>
                         );
                     });
-                }), [seatMap, selectedSeats, getSeatStatus, isSeatAvailable, isSeatOccupied, handleSeatClick])}
+                }), [seatMap, selectedSeats, getSeatStatus, isSeatOccupied, handleSeatClick])}
             </div>
         </div>
     );
