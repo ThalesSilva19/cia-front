@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { seatService, Seat } from '@/services/api';
 import LogoutButton from './LogoutButton';
+import Link from 'next/link';
 
 const UserTickets = () => {
     const [tickets, setTickets] = useState<Seat[]>([]);
@@ -69,12 +70,12 @@ const UserTickets = () => {
                             Meus Ingressos
                         </h1>
                         <div className="flex space-x-4">
-                            <a
+                            <Link
                                 href="/"
                                 className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
                             >
                                 Voltar
-                            </a>
+                            </Link>
                             <LogoutButton />
                         </div>
                     </div>
@@ -112,12 +113,12 @@ const UserTickets = () => {
                                 <p className="text-gray-500 mb-6">
                                     Você ainda não possui ingressos reservados.
                                 </p>
-                                <a
+                                <Link
                                     href="/"
                                     className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
                                 >
                                     Reservar Ingressos
-                                </a>
+                                </Link>
                             </div>
                         ) : (
                             <div className="space-y-6">

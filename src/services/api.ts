@@ -80,7 +80,7 @@ export interface UserReservation {
 
 
 export const reservationService = {
-    async preReserve(seats: string[]): Promise<any> {
+    async preReserve(seats: string[]): Promise<{ message: string; reserved_seats: string[] }> {
         const seatData: SeatReservation[] = seats.map(seat_code => ({
             seat_code,
             is_half_price: false // Por enquanto, assumindo que não há meia entrada na pré-reserva
@@ -95,7 +95,7 @@ export const reservationService = {
         }
     },
 
-    async reserveSeats(seatData: SeatReservation[]): Promise<any> {
+    async reserveSeats(seatData: SeatReservation[]): Promise<{ message: string; reserved_seats: string[] }> {
         try {
             const response = await api.post('/seats/reserve', seatData);
             return response.data;
@@ -107,7 +107,7 @@ export const reservationService = {
 };
 
 export const authService = {
-    async login(loginData: { email: string; password: string }): Promise<any> {
+    async login(loginData: { email: string; password: string }): Promise<{ access_token: string; user: { id: number; email: string; full_name: string } }> {
         try {
             const response = await api.post('/login', loginData);
             return response.data;
@@ -122,7 +122,7 @@ export const authService = {
         email: string;
         phone_number: string;
         password: string;
-    }): Promise<any> {
+    }): Promise<{ access_token: string; user: { id: number; email: string; full_name: string } }> {
         try {
             const response = await api.post('/register', registerData);
             return response.data;
@@ -166,7 +166,7 @@ export const adminService = {
         }
     },
 
-    async approveSeat(seatCode: string): Promise<any> {
+    async approveSeat(seatCode: string): Promise<{ message: string }> {
         try {
             const response = await api.post(`/admin/approve-seat?seat_code=${seatCode}`);
             return response.data;
@@ -176,7 +176,7 @@ export const adminService = {
         }
     },
 
-    async reproveSeat(seatCode: string): Promise<any> {
+    async reproveSeat(seatCode: string): Promise<{ message: string }> {
         try {
             const response = await api.post(`/admin/reprove-seat?seat_code=${seatCode}`);
             return response.data;

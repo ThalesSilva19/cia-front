@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { adminService, UserReservation } from '@/services/api';
 import LogoutButton from './LogoutButton';
+import Link from 'next/link';
 
 const AdminPanel = () => {
     const [pendingReservations, setPendingReservations] = useState<UserReservation[]>([]);
@@ -80,17 +81,9 @@ const AdminPanel = () => {
         }
     };
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
+    // Removido formatDate não utilizado
 
-    const calculateTotalPrice = (seats: any[]) => {
+    const calculateTotalPrice = (seats: { is_half_price: boolean }[]) => {
         return seats.reduce((total, seat) => {
             // Preços fixos: R$ 60,00 inteira e R$ 30,00 meia
             const price = seat.is_half_price ? 30 : 60;
@@ -131,12 +124,12 @@ const AdminPanel = () => {
                             Painel Administrativo
                         </h1>
                         <div className="flex space-x-4">
-                            <a
+                            <Link
                                 href="/"
                                 className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
                             >
                                 Voltar
-                            </a>
+                            </Link>
                             <LogoutButton />
                         </div>
                     </div>
@@ -196,7 +189,7 @@ const AdminPanel = () => {
                                 </div>
 
                                 <div className="space-y-6">
-                                    {pendingReservations.map((reservation, index) => (
+                                    {pendingReservations.map((reservation) => (
                                         <div key={reservation.user_name} className="border border-gray-200 rounded-lg p-6">
                                             <div className="flex justify-between items-center mb-4">
                                                 <div>

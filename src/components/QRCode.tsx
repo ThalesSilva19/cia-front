@@ -6,7 +6,7 @@ interface QRCodeProps {
     className?: string;
 }
 
-const QRCode = ({ value = "PIX", size = 256, className = "" }: QRCodeProps) => {
+const QRCode = ({ size = 256, className = "" }: QRCodeProps) => {
     return (
         <div className={`bg-gray-100 p-6 rounded-lg inline-block ${className}`}>
             <div

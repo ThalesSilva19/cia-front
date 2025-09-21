@@ -66,9 +66,14 @@ const LoginForm = () => {
                 }, 1500);
             }
 
-        } catch (err: any) {
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message);
+        } catch (err: unknown) {
+            if (err && typeof err === 'object' && 'response' in err) {
+                const error = err as { response?: { data?: { message?: string } } };
+                if (error.response?.data?.message) {
+                    setError(error.response.data.message);
+                } else {
+                    setError('Erro desconhecido');
+                }
             } else if (err instanceof Error) {
                 setError(err.message);
             } else {
@@ -117,9 +122,14 @@ const LoginForm = () => {
                 password: ''
             });
 
-        } catch (err: any) {
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message);
+        } catch (err: unknown) {
+            if (err && typeof err === 'object' && 'response' in err) {
+                const error = err as { response?: { data?: { message?: string } } };
+                if (error.response?.data?.message) {
+                    setError(error.response.data.message);
+                } else {
+                    setError('Erro desconhecido');
+                }
             } else if (err instanceof Error) {
                 setError(err.message);
             } else {
