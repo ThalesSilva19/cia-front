@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { authService } from '@/services/api';
 import AuthGuard from '@/components/AuthGuard';
 import AppHeader from '@/components/AppHeader';
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -191,5 +191,28 @@ export default function ResetPasswordPage() {
                 </div>
             </main>
         </AuthGuard>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={
+            <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-pink-50">
+                <AppHeader
+                    title="Redefinir Senha"
+                    subtitle="Carregando..."
+                />
+                <div className="p-6">
+                    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+                        <div className="text-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                            <p className="mt-2 text-gray-600">Carregando...</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }>
+            <ResetPasswordContent />
+        </Suspense>
     );
 }

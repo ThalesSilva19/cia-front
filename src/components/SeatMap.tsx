@@ -56,18 +56,6 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
         return seat.status;
     }, []);
 
-    const isSeatAvailable = useCallback((seat: Seat | undefined) => {
-        if (!seat) return false;
-        const status = getSeatStatus(seat);
-
-        // Se o assento está pré-reservado pelo usuário atual, tratá-lo como disponível
-        if (status === 'pre-reserved' && isSeatPreReserved(seat.code)) {
-            return true;
-        }
-
-        return status === 'available';
-    }, [getSeatStatus, isSeatPreReserved]);
-
     const isSeatOccupied = useCallback((seat: Seat | undefined) => {
         if (!seat) return false;
         const status = getSeatStatus(seat);

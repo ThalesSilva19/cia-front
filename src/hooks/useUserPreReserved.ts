@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { seatService } from '@/services/api';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -10,7 +10,7 @@ export const useUserPreReserved = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchPreReservedSeats = async () => {
+    const fetchPreReservedSeats = useCallback(async () => {
         if (!isAuthenticated) {
             setPreReservedSeats([]);
             return;
@@ -43,7 +43,7 @@ export const useUserPreReserved = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [isAuthenticated]);
 
     const addPreReservedSeat = (seatCode: string) => {
         setPreReservedSeats(prev => {

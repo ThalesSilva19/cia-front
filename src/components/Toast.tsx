@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export interface ToastProps {
     id: string;
@@ -15,12 +15,12 @@ const Toast = ({ id, type, title, message, duration = 5000, onClose }: ToastProp
     const [isVisible, setIsVisible] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setIsLeaving(true);
         setTimeout(() => {
             onClose(id);
         }, 300);
-    };
+    }, [onClose, id]);
 
     useEffect(() => {
         // Animar entrada
