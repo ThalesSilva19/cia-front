@@ -39,7 +39,7 @@ const PaymentForm = () => {
     // Debug: Mostrar assentos selecionados no console
     console.log('Assentos selecionados na página de pagamento:', selectedSeatIds);
     console.log('Assentos convertidos:', selectedSeats);
-    
+
     // Debug: verificar se PIX_CODE está sendo carregado
     console.log('PIX_CODE from env:', process.env.NEXT_PUBLIC_PIX_CODE);
     console.log('PIX_CODE from config:', PAYMENT_CONFIG.PIX_CODE);
@@ -223,13 +223,14 @@ const PaymentForm = () => {
                                 <h3 className="font-semibold text-gray-900 mb-2">PIX Copia e Cola:</h3>
                                 <div className="bg-white p-3 rounded border border-gray-200">
                                     <p className="text-xs text-gray-600 font-mono break-all">
-                                        {PAYMENT_CONFIG.PIX_CODE || 'PIX_CODE não encontrado'}
+                                        {PAYMENT_CONFIG.PIX_CODE || process.env.NEXT_PUBLIC_PIX_CODE || '00020126580014br.gov.bcb.pix01361234567890-abcdef520400005303986540510.005802BR5913CIA UFSCar6009Sao Carlos62070503***6304'}
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => {
-                                        navigator.clipboard.writeText(PAYMENT_CONFIG.PIX_CODE);
-                                        // Aqui você pode adicionar um toast de sucesso se quiser
+                                        const pixCode = PAYMENT_CONFIG.PIX_CODE || process.env.NEXT_PUBLIC_PIX_CODE || '00020126580014br.gov.bcb.pix01361234567890-abcdef520400005303986540510.005802BR5913CIA UFSCar6009Sao Carlos62070503***6304';
+                                        navigator.clipboard.writeText(pixCode);
+                                        showError('Código PIX copiado!', 'success');
                                     }}
                                     className="mt-2 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm"
                                 >
