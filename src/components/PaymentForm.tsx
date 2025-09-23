@@ -204,6 +204,9 @@ const PaymentForm = () => {
                                         width={256}
                                         height={256}
                                         className="rounded-lg"
+                                        onError={(e) => {
+                                            console.error('Erro ao carregar imagem QR Code:', e);
+                                        }}
                                     />
                                 </div>
                                 <p className="text-sm text-gray-600 mt-2">
@@ -216,7 +219,7 @@ const PaymentForm = () => {
                                 <h3 className="font-semibold text-gray-900 mb-2">PIX Copia e Cola:</h3>
                                 <div className="bg-white p-3 rounded border border-gray-200">
                                     <p className="text-xs text-gray-600 font-mono break-all">
-                                        {PAYMENT_CONFIG.PIX_CODE}
+                                        {PAYMENT_CONFIG.PIX_CODE || 'PIX_CODE não encontrado'}
                                     </p>
                                 </div>
                                 <button
