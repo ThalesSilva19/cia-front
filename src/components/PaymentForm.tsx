@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useSeatContext } from '@/contexts/SeatContext';
-import QRCode from './QRCode';
 import { reservationService } from '@/services/api';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/contexts/ToastContext';
+import { PAYMENT_CONFIG } from '@/config/settings';
+import Image from 'next/image';
 
 interface SelectedSeat {
     id: string;
@@ -196,10 +197,37 @@ const PaymentForm = () => {
                         <div className="space-y-6">
                             {/* QR Code */}
                             <div className="text-center">
-                                <QRCode
-                                    value={`PIX-${selectedSeats.map(s => s.id).join(',')}-${calculateTotal()}`}
-                                    size={256}
-                                />
+                                <div className="bg-white p-4 rounded-lg shadow-md inline-block">
+                                    <Image
+                                        src="/qr_code.jpg"
+                                        alt="QR Code PIX"
+                                        width={256}
+                                        height={256}
+                                        className="rounded-lg"
+                                    />
+                                </div>
+                                <p className="text-sm text-gray-600 mt-2">
+                                    Escaneie o QR Code com seu app de pagamento
+                                </p>
+                            </div>
+
+                            {/* PIX Copia e Cola */}
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <h3 className="font-semibold text-gray-900 mb-2">PIX Copia e Cola:</h3>
+                                <div className="bg-white p-3 rounded border border-gray-200">
+                                    <p className="text-xs text-gray-600 font-mono break-all">
+                                        {PAYMENT_CONFIG.PIX_CODE}
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(PAYMENT_CONFIG.PIX_CODE);
+                                        // Aqui você pode adicionar um toast de sucesso se quiser
+                                    }}
+                                    className="mt-2 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm"
+                                >
+                                    Copiar Código PIX
+                                </button>
                             </div>
 
                             {/* Payment Instructions */}
@@ -207,7 +235,7 @@ const PaymentForm = () => {
                                 <h3 className="font-semibold text-blue-900 mb-2">Como pagar:</h3>
                                 <ol className="text-sm text-blue-800 space-y-1">
                                     <li>1. Abra seu app de pagamento (PIX)</li>
-                                    <li>2. Escaneie o QR Code acima</li>
+                                    <li>2. Escaneie o QR Code acima OU copie o código PIX</li>
                                     <li>3. Confirme o valor: <strong>R$ {calculateTotal().toFixed(2)}</strong></li>
                                     <li>4. Complete o pagamento</li>
                                     <li>5. Faça upload do comprovante abaixo</li>
