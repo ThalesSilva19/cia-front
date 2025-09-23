@@ -177,7 +177,7 @@ const LoginForm = () => {
                             </p>
                             <button
                                 onClick={handleLogout}
-                                className="mt-2 text-sm text-green-600 hover:text-green-500 underline"
+                                className="mt-2 text-sm text-green-600 hover:text-green-500 underline cursor-pointer"
                             >
                                 Fazer logout
                             </button>
@@ -200,7 +200,7 @@ const LoginForm = () => {
                 <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
                     <button
                         onClick={() => setActiveTab('login')}
-                        className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors ${activeTab === 'login'
+                        className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors cursor-pointer ${activeTab === 'login'
                             ? 'bg-white text-blue-600 shadow-sm'
                             : 'text-gray-600 hover:text-gray-900'
                             }`}
@@ -209,7 +209,7 @@ const LoginForm = () => {
                     </button>
                     <button
                         onClick={() => setActiveTab('register')}
-                        className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors ${activeTab === 'register'
+                        className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors cursor-pointer ${activeTab === 'register'
                             ? 'bg-white text-blue-600 shadow-sm'
                             : 'text-gray-600 hover:text-gray-900'
                             }`}
@@ -258,7 +258,7 @@ const LoginForm = () => {
                             <button
                                 type="button"
                                 onClick={() => router.push('/forgot-password')}
-                                className="text-sm text-blue-600 hover:text-blue-500"
+                                className="text-sm text-blue-600 hover:text-blue-500 cursor-pointer"
                             >
                                 Esqueceu a senha?
                             </button>
@@ -267,7 +267,7 @@ const LoginForm = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         >
                             {isLoading ? 'Entrando...' : 'Entrar'}
                         </button>
@@ -348,7 +348,7 @@ const LoginForm = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         >
                             {isLoading ? 'Criando conta...' : 'Criar Conta'}
                         </button>

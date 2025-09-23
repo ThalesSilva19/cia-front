@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
                                 <div className="space-y-3">
                                     <button
                                         onClick={() => router.push('/login')}
-                                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
                                     >
                                         Voltar ao Login
                                     </button>
@@ -101,14 +101,14 @@ export default function ForgotPasswordPage() {
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+                                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
                                     >
                                         {isLoading ? 'Enviando...' : 'Enviar Instruções'}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => router.push('/login')}
-                                        className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors"
+                                        className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors cursor-pointer"
                                     >
                                         Voltar ao Login
                                     </button>

@@ -19,7 +19,7 @@ interface SelectedSeat {
 const PaymentForm = () => {
     const { selectedSeats: selectedSeatIds, clearSeats } = useSeatContext();
     const router = useRouter();
-    const { showError } = useToast();
+    const { showError, showSuccess } = useToast();
 
     // Converter IDs dos assentos para objetos com preços
     const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>(() => {
@@ -171,7 +171,7 @@ const PaymentForm = () => {
 
                                         <button
                                             onClick={() => setSelectedSeats(prev => prev.filter(s => s.id !== seat.id))}
-                                            className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                            className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                                         >
                                             Remover
                                         </button>
@@ -230,9 +230,9 @@ const PaymentForm = () => {
                                     onClick={() => {
                                         const pixCode = PAYMENT_CONFIG.PIX_CODE || process.env.NEXT_PUBLIC_PIX_CODE || '00020126580014br.gov.bcb.pix01361234567890-abcdef520400005303986540510.005802BR5913CIA UFSCar6009Sao Carlos62070503***6304';
                                         navigator.clipboard.writeText(pixCode);
-                                        showError('Código PIX copiado!', 'success');
+                                        showSuccess('Código PIX copiado!');
                                     }}
-                                    className="mt-2 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm"
+                                    className="mt-2 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm cursor-pointer"
                                 >
                                     Copiar Código PIX
                                 </button>
@@ -311,7 +311,7 @@ const PaymentForm = () => {
                             <button
                                 onClick={handlePayment}
                                 disabled={isProcessing || selectedSeats.length === 0 || !paymentProof}
-                                className="w-full bg-green-600 text-white py-4 px-6 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                className="w-full bg-green-600 text-white py-4 px-6 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
                             >
                                 {isProcessing ? (
                                     <div className="flex items-center justify-center">
