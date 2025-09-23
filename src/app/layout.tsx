@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SeatProvider } from "@/contexts/SeatContext";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Seat Map Reservation",
-  description: "Select your seat from the interactive seat map.",
+  title: "Meraki - O respiro das telas | Cia de Dança Ufscar",
+  description: "Reserve seu assento para o espetáculo Meraki - O respiro das telas da Cia de Dança Ufscar. 01 de novembro - Colégio La Salle.",
 };
 
 export default function RootLayout({
@@ -28,9 +29,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
-        <SeatProvider>
-          {children}
-        </SeatProvider>
+        <ToastProvider>
+          <SeatProvider>
+            {children}
+          </SeatProvider>
+        </ToastProvider>
       </body>
     </html>
   );

@@ -8,3 +8,5 @@ export { default as LogoutButton } from './LogoutButton';
 export { default as PaymentButton } from './PaymentButton';
 export { default as QRCode } from './QRCode';
 export { default as SeatDebugger } from './SeatDebugger';
+export { default as AppHeader } from './AppHeader';
+export { default as Toast } from './Toast';

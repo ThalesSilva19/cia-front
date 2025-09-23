@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { adminService, UserReservation } from '@/services/api';
 import LogoutButton from './LogoutButton';
 import Link from 'next/link';
+import { useToast } from '@/contexts/ToastContext';
 
 const AdminPanel = () => {
     const [pendingReservations, setPendingReservations] = useState<UserReservation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [processingSeats, setProcessingSeats] = useState<Set<string>>(new Set());
+    const { showSuccess, showError } = useToast();
 
     useEffect(() => {
         const fetchPendingReservations = async () => {
@@ -42,10 +44,10 @@ const AdminPanel = () => {
                 })).filter(reservation => reservation.seats.length > 0)
             );
 
-            alert(`Assento ${seatCode} aprovado com sucesso!`);
+            showSuccess('Assento Aprovado', `Assento ${seatCode} foi aprovado com sucesso!`);
         } catch (err) {
             console.error('Erro ao aprovar assento:', err);
-            alert('Erro ao aprovar assento. Tente novamente.');
+            showError('Erro ao Aprovar', 'Não foi possível aprovar o assento. Tente novamente.');
         } finally {
             setProcessingSeats(prev => {
                 const newSet = new Set(prev);
@@ -68,10 +70,10 @@ const AdminPanel = () => {
                 })).filter(reservation => reservation.seats.length > 0)
             );
 
-            alert(`Assento ${seatCode} reprovado com sucesso!`);
+            showSuccess('Assento Reprovado', `Assento ${seatCode} foi reprovado com sucesso!`);
         } catch (err) {
             console.error('Erro ao reprovar assento:', err);
-            alert('Erro ao reprovar assento. Tente novamente.');
+            showError('Erro ao Reprovar', 'Não foi possível reprovar o assento. Tente novamente.');
         } finally {
             setProcessingSeats(prev => {
                 const newSet = new Set(prev);
@@ -85,8 +87,8 @@ const AdminPanel = () => {
 
     const calculateTotalPrice = (seats: { is_half_price: boolean }[]) => {
         return seats.reduce((total, seat) => {
-            // Preços fixos: R$ 60,00 inteira e R$ 30,00 meia
-            const price = seat.is_half_price ? 30 : 60;
+            // Preços fixos: R$ 50,00 inteira e R$ 25,00 meia
+            const price = seat.is_half_price ? 25 : 50;
             return total + price;
         }, 0);
     };
@@ -228,7 +230,7 @@ const AdminPanel = () => {
                                                                         {seat.is_half_price ? 'Meia entrada' : 'Inteira'}
                                                                     </div>
                                                                     <div className="text-xs font-medium text-green-600">
-                                                                        {formatPrice(seat.is_half_price ? 30 : 60)}
+                                                                        {formatPrice(seat.is_half_price ? 25 : 50)}
                                                                     </div>
                                                                 </div>
                                                             </div>

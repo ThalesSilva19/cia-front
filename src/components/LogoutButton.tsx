@@ -2,13 +2,16 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/contexts/ToastContext';
 
 const LogoutButton = () => {
     const { logout } = useAuth();
     const router = useRouter();
+    const { showSuccess } = useToast();
 
     const handleLogout = () => {
         logout();
+        showSuccess('Logout Realizado', 'Você foi desconectado com sucesso!');
         router.push('/login');
     };
 

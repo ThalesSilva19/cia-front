@@ -1,10 +1,9 @@
 'use client';
 
 import SeatMap from "@/components/SeatMap";
-import Link from "next/link";
 import AuthGuard from "@/components/AuthGuard";
-import LogoutButton from "@/components/LogoutButton";
 import PaymentButton from "@/components/PaymentButton";
+import AppHeader from "@/components/AppHeader";
 import { seatService, Seat } from "@/services/api";
 import { useEffect, useState, useCallback } from "react";
 
@@ -35,26 +34,10 @@ const Home = () => {
     <AuthGuard requireAuth={true}>
       <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-pink-50">
         <div className="h-screen flex flex-col">
-          <header className="text-center py-8 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-            <div className="flex justify-between items-center mb-4">
-              <div></div>
-              <h1 className="text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight">
-                Seat Map Reservation
-              </h1>
-              <div className="flex space-x-4">
-                <Link
-                  href="/tickets"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Meus Ingressos
-                </Link>
-                <LogoutButton />
-              </div>
-            </div>
-            <p className="text-lg text-gray-500">
-              Select your seat from the beautiful interactive map below.
-            </p>
-          </header>
+          <AppHeader
+            title="Meraki - O respiro das telas"
+            subtitle="Selecione seu assento para o espetáculo da Cia de Dança Ufscar"
+          />
 
           <div className="flex-1 overflow-auto p-6">
             <div className="max-w-7xl mx-auto">

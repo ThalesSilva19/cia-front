@@ -15,7 +15,7 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         // Rotas que não precisam de autenticação
-        const authRoutes = ['/login', '/register'];
+        const authRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
         const isAuthRoute = authRoutes.some(route => config.url?.includes(route));
 
         // Se não for rota de auth, adicionar token
@@ -78,12 +78,17 @@ export interface UserReservation {
     seats: SeatInfo[];
 }
 
+export interface UserInfo {
+    user_id: number;
+    user_name: string;
+    user_scopes: string[];
+}
+
 
 export const reservationService = {
     async preReserve(seats: string[]): Promise<{ message: string; reserved_seats: string[] }> {
-        const seatData: SeatReservation[] = seats.map(seat_code => ({
-            seat_code,
-            is_half_price: false // Por enquanto, assumindo que não há meia entrada na pré-reserva
+        const seatData = seats.map(seat_code => ({
+            seat_code
         }));
 
         try {
@@ -95,9 +100,24 @@ export const reservationService = {
         }
     },
 
-    async reserveSeats(seatData: SeatReservation[]): Promise<{ message: string; reserved_seats: string[] }> {
+    async reserveSeats(seatData: SeatReservation[], file?: File): Promise<{ message: string }> {
         try {
-            const response = await api.post('/seats/reserve', seatData);
+            // Criar FormData com dados dos assentos como JSON string
+            const formData = new FormData();
+
+            // Adicionar dados dos assentos como JSON string (nome do campo deve ser "request")
+            formData.append('request', JSON.stringify(seatData));
+
+            // Adicionar arquivo se fornecido
+            if (file) {
+                formData.append('file', file);
+            }
+
+            const response = await api.post('/seats/reserve', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             return response.data;
         } catch (error) {
             console.error('Erro ao reservar assentos:', error);
@@ -131,6 +151,39 @@ export const authService = {
             throw error;
         }
     },
+
+    async getMe(): Promise<UserInfo> {
+        try {
+            const response = await api.get('/me');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar informações do usuário:', error);
+            throw error;
+        }
+    },
+
+    async forgotPassword(email: string): Promise<{ message: string }> {
+        try {
+            const response = await api.post('/forgot-password', { email });
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao solicitar recuperação de senha:', error);
+            throw error;
+        }
+    },
+
+    async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+        try {
+            const response = await api.post('/reset-password', {
+                token,
+                new_password: newPassword
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao redefinir senha:', error);
+            throw error;
+        }
+    },
 };
 
 export const seatService = {
@@ -150,6 +203,16 @@ export const seatService = {
             return response.data;
         } catch (error) {
             console.error('Erro ao buscar ingressos do usuário:', error);
+            throw error;
+        }
+    },
+
+    async getUserPreReserved(): Promise<Seat[]> {
+        try {
+            const response = await api.get('/seats/user/pre-reserved');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar assentos pré-reservados do usuário:', error);
             throw error;
         }
     },

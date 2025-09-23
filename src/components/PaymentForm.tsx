@@ -5,6 +5,7 @@ import { useSeatContext } from '@/contexts/SeatContext';
 import QRCode from './QRCode';
 import { reservationService } from '@/services/api';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/contexts/ToastContext';
 
 interface SelectedSeat {
     id: string;
@@ -17,6 +18,7 @@ interface SelectedSeat {
 const PaymentForm = () => {
     const { selectedSeats: selectedSeatIds, clearSeats } = useSeatContext();
     const router = useRouter();
+    const { showError } = useToast();
 
     // Converter IDs dos assentos para objetos com preços
     const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>(() => {
@@ -27,7 +29,7 @@ const PaymentForm = () => {
                 id: seatId,
                 row,
                 number,
-                price: 60, // Preço padrão (inteira)
+                price: 50, // Preço padrão (inteira)
                 isHalfPrice: false
             };
         });
@@ -59,8 +61,8 @@ const PaymentForm = () => {
 
     const calculateTotal = () => {
         return selectedSeats.reduce((total, seat) => {
-            // Preços fixos: R$ 60,00 inteira e R$ 30,00 meia
-            const price = seat.isHalfPrice ? 30 : 60;
+            // Preços fixos: R$ 50,00 inteira e R$ 25,00 meia
+            const price = seat.isHalfPrice ? 25 : 50;
             return total + price;
         }, 0);
     };
@@ -76,24 +78,20 @@ const PaymentForm = () => {
                 is_half_price: seat.isHalfPrice
             }));
 
-            // Fazer reserva definitiva dos assentos
-            await reservationService.reserveSeats(seatData);
+            // Fazer reserva definitiva dos assentos com arquivo de comprovante
+            await reservationService.reserveSeats(seatData, paymentProof || undefined);
 
             // Simular processamento adicional
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            alert('Pagamento processado com sucesso!');
-
             // Limpar assentos após pagamento bem-sucedido
             clearSeats();
 
-            // Redirecionar para home após sucesso
-            setTimeout(() => {
-                router.push('/');
-            }, 1500);
+            // Redirecionar para página de sucesso
+            router.push('/payment/success');
         } catch (error) {
             console.error('Erro ao processar pagamento:', error);
-            alert('Erro ao processar o pagamento. Tente novamente.');
+            showError('Erro no Pagamento', 'Não foi possível processar o pagamento. Tente novamente.');
         } finally {
             setIsProcessing(false);
         }
@@ -143,7 +141,7 @@ const PaymentForm = () => {
 
                                         <div className="text-right">
                                             <div className="text-2xl font-bold text-gray-900">
-                                                R$ {(seat.isHalfPrice ? 30 : 60).toFixed(2)}
+                                                R$ {(seat.isHalfPrice ? 25 : 50).toFixed(2)}
                                             </div>
                                             {seat.isHalfPrice && (
                                                 <div className="text-sm text-green-600 font-medium">
