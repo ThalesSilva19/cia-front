@@ -44,11 +44,14 @@ export const SeatProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const toggleSeat = (seatId: string) => {
-        setSelectedSeats(prev =>
-            prev.includes(seatId)
+        console.log('ToggleSeat called with:', seatId); // Debug log
+        setSelectedSeats(prev => {
+            const newSeats = prev.includes(seatId)
                 ? prev.filter(id => id !== seatId)
-                : [...prev, seatId]
-        );
+                : [...prev, seatId];
+            console.log('New selected seats:', newSeats); // Debug log
+            return newSeats;
+        });
     };
 
     const clearSeats = () => {

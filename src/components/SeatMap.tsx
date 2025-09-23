@@ -69,10 +69,16 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
     }, [getSeatStatus, isSeatPreReserved]);
 
     const handleSeatClick = useCallback((seatId: string) => {
+        console.log('Seat clicked:', seatId); // Debug log
         const seat = seatMap.get(seatId);
+        console.log('Seat found:', seat); // Debug log
+
         // Permite clicar se o assento estiver disponível ou pré-reservado pelo usuário
         if (seat && (seat.status === 'available' || (seat.status === 'pre-reserved' && isSeatPreReserved(seat.code)))) {
+            console.log('Toggling seat:', seatId); // Debug log
             toggleSeat(seatId);
+        } else {
+            console.log('Seat not clickable:', seatId, 'Status:', seat?.status, 'IsPreReserved:', seat ? isSeatPreReserved(seat.code) : false);
         }
     }, [seatMap, toggleSeat, isSeatPreReserved]);
 

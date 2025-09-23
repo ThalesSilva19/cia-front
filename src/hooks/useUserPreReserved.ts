@@ -78,7 +78,9 @@ export const useUserPreReserved = () => {
     };
 
     const isSeatPreReserved = (seatCode: string) => {
-        return preReservedSeats.includes(seatCode);
+        const result = preReservedSeats.includes(seatCode);
+        console.log('isSeatPreReserved:', seatCode, 'Result:', result, 'PreReservedSeats:', preReservedSeats); // Debug log
+        return result;
     };
 
     // Carregar do localStorage na inicialização
