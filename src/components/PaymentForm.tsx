@@ -39,6 +39,10 @@ const PaymentForm = () => {
     // Debug: Mostrar assentos selecionados no console
     console.log('Assentos selecionados na página de pagamento:', selectedSeatIds);
     console.log('Assentos convertidos:', selectedSeats);
+    
+    // Debug: verificar se PIX_CODE está sendo carregado
+    console.log('PIX_CODE from env:', process.env.NEXT_PUBLIC_PIX_CODE);
+    console.log('PIX_CODE from config:', PAYMENT_CONFIG.PIX_CODE);
 
     const [paymentProof, setPaymentProof] = useState<File | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
