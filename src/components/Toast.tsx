@@ -15,6 +15,13 @@ const Toast = ({ id, type, title, message, duration = 5000, onClose }: ToastProp
     const [isVisible, setIsVisible] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
 
+    const handleClose = () => {
+        setIsLeaving(true);
+        setTimeout(() => {
+            onClose(id);
+        }, 300);
+    };
+
     useEffect(() => {
         // Animar entrada
         const timer = setTimeout(() => setIsVisible(true), 100);
@@ -29,13 +36,6 @@ const Toast = ({ id, type, title, message, duration = 5000, onClose }: ToastProp
             clearTimeout(autoCloseTimer);
         };
     }, [duration, handleClose]);
-
-    const handleClose = () => {
-        setIsLeaving(true);
-        setTimeout(() => {
-            onClose(id);
-        }, 300);
-    };
 
     const getToastStyles = () => {
         switch (type) {
