@@ -28,7 +28,7 @@ export const AUTH_CONFIG = {
 export const PAYMENT_CONFIG = {
     STRIPE_PUBLIC_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '',
     PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
-    PIX_CODE: process.env.NEXT_PUBLIC_PIX_CODE || '',
+    PIX_CODE: process.env.PIX_CODE || '',
 } as const;
 
 // Configurações de desenvolvimento
