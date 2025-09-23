@@ -29,8 +29,6 @@ export const SeatProvider = ({ children }: { children: ReactNode }) => {
 
     const {
         preReservedSeats,
-        isLoading: preReservedLoading,
-        error: preReservedError,
         fetchPreReservedSeats,
         isSeatPreReserved
     } = useUserPreReserved();

@@ -4,11 +4,6 @@ import { useState, useEffect } from 'react';
 import { seatService } from '@/services/api';
 import { useAuth } from '@/hooks/useAuth';
 
-interface PreReservedSeat {
-    code: string;
-    status: string;
-}
-
 export const useUserPreReserved = () => {
     const { isAuthenticated } = useAuth();
     const [preReservedSeats, setPreReservedSeats] = useState<string[]>([]);
@@ -111,7 +106,7 @@ export const useUserPreReserved = () => {
                 localStorage.removeItem('cia-app-pre-reserved-seats');
             }
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, fetchPreReservedSeats]);
 
     return {
         preReservedSeats,

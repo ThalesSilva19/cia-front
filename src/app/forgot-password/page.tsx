@@ -22,8 +22,11 @@ export default function ForgotPasswordPage() {
         try {
             const response = await authService.forgotPassword(email);
             setMessage(response.message);
-        } catch (error: any) {
-            setError(error.response?.data?.detail || 'Erro ao solicitar recuperação de senha');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error && 'response' in error
+                ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail || 'Erro ao solicitar recuperação de senha'
+                : 'Erro ao solicitar recuperação de senha';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }

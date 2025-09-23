@@ -80,7 +80,7 @@ export default function PaymentSuccessPage() {
                                     <ul className="text-green-800 space-y-2">
                                         <li className="flex items-start">
                                             <span className="text-green-600 mr-2">•</span>
-                                            <span>Seus ingressos aparecerão em <strong>"Meus Ingressos"</strong> após validação</span>
+                                            <span>Seus ingressos aparecerão em <strong>&quot;Meus Ingressos&quot;</strong> após validação</span>
                                         </li>
                                         <li className="flex items-start">
                                             <span className="text-green-600 mr-2">•</span>

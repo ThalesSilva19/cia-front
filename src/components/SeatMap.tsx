@@ -285,7 +285,6 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                                 const seatId = `${rowLetter}${seatNumber}`;
                                 const seat = seatMap.get(seatId);
                                 const isSelected = selectedSeats.includes(seatId);
-                                // const isAvailable = isSeatAvailable(seat); // Removido - não utilizado
                                 const isOccupied = isSeatOccupied(seat);
                                 const seatStatus = getSeatStatus(seat);
 
@@ -342,7 +341,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                                     </button>
                                 );
                             });
-                        }), [seatMap, selectedSeats, getSeatStatus, isSeatOccupied, handleSeatClick, isMobile])}
+                        }), [seatMap, selectedSeats, getSeatStatus, isSeatOccupied, handleSeatClick, isMobile, isSeatPreReserved])}
                     </div>
                 </div>
             </div>

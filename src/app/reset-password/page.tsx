@@ -50,8 +50,11 @@ export default function ResetPasswordPage() {
         try {
             const response = await authService.resetPassword(token, newPassword);
             setMessage(response.message);
-        } catch (error: any) {
-            setError(error.response?.data?.detail || 'Erro ao redefinir senha');
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error && 'response' in error
+                ? (error as { response?: { data?: { detail?: string } } }).response?.data?.detail || 'Erro ao redefinir senha'
+                : 'Erro ao redefinir senha';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
