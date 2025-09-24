@@ -26,6 +26,13 @@ const Home = () => {
     }
   }, []);
 
+  // Limpar localStorage ao entrar na home
+  useEffect(() => {
+    // Limpar assentos selecionados do localStorage
+    localStorage.removeItem('cia-app-selected-seats');
+    console.log('LocalStorage limpo ao entrar na home');
+  }, []);
+
   useEffect(() => {
     fetchSeats();
   }, [fetchSeats]);
