@@ -25,7 +25,7 @@ const AppHeader = ({
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h3a1 1 0 011 1v1a1 1 0 01-1 1h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7H3a1 1 0 01-1-1V5a1 1 0 011-1h3zM9 4h6V3H9v1z" />
                             </svg>
                         </div>
-                        <div>
+                        <div className="text-center">
                             <h1 className="text-xl md:text-3xl font-bold tracking-tight">
                                 {title}
                             </h1>
