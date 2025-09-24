@@ -18,23 +18,19 @@ const AppHeader = ({
     return (
         <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white shadow-xl">
             <div className="max-w-7xl mx-auto px-6 py-6">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                {/* Header com botões */}
+                <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center space-x-2 md:space-x-4">
                         <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center">
                             <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h3a1 1 0 011 1v1a1 1 0 01-1 1h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7H3a1 1 0 01-1-1V5a1 1 0 011-1h3zM9 4h6V3H9v1z" />
                             </svg>
                         </div>
-                        <div className="text-center">
-                            <h1 className="text-xl md:text-3xl font-bold tracking-tight">
-                                {title}
-                            </h1>
-                            {userInfo && (
-                                <p className="text-blue-100 text-xs md:text-sm">
-                                    Bem-vindo, {userInfo.user_name}
-                                </p>
-                            )}
-                        </div>
+                        {userInfo && (
+                            <p className="text-blue-100 text-xs md:text-sm">
+                                Bem-vindo, {userInfo.user_name}
+                            </p>
+                        )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2 md:gap-3">
@@ -75,7 +71,11 @@ const AppHeader = ({
                     </div>
                 </div>
 
-                <div className="text-center">
+                {/* Título e subtítulo centralizados */}
+                <div className="text-center mb-4">
+                    <h1 className="text-xl md:text-3xl font-bold tracking-tight mb-2">
+                        {title}
+                    </h1>
                     <p className="text-blue-100 text-sm md:text-lg">
                         {subtitle}
                     </p>
