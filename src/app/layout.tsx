@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SeatProvider } from "@/contexts/SeatContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import WhatsAppFloatButton from "@/components/WhatsAppFloatButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
         <ToastProvider>
           <SeatProvider>
             {children}
+            <WhatsAppFloatButton />
           </SeatProvider>
         </ToastProvider>
       </body>

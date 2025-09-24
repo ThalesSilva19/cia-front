@@ -66,7 +66,7 @@ const UserTickets = () => {
                 <header className="text-center py-8 bg-white/80 backdrop-blur-sm border-b border-gray-200">
                     <div className="flex justify-between items-center mb-4">
                         <div></div>
-                        <h1 className="text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight">
+                        <h1 className="text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight text-center">
                             Meus Ingressos
                         </h1>
                         <div className="flex space-x-4">
@@ -123,7 +123,7 @@ const UserTickets = () => {
                         ) : (
                             <div className="space-y-6">
                                 <div className="bg-white rounded-2xl shadow-xl p-6">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
                                         Seus Ingressos ({tickets.length})
                                     </h2>
 

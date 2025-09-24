@@ -134,7 +134,7 @@ export default function PaymentSuccessPage() {
                                     Se você tiver qualquer dúvida sobre seus ingressos ou o evento, entre em contato conosco:
                                 </p>
                                 <a
-                                    href="https://wa.me/5511999999999?text=Olá! Tenho uma dúvida sobre meus ingressos para o espetáculo Meraki - O respiro das telas."
+                                    href="https://wa.me/5571991241714?text=Olá! Tenho uma dúvida sobre meus ingressos para o espetáculo Meraki - O respiro das telas."
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"

@@ -179,7 +179,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
 
             {/* Container do Mapa com Scroll */}
             <div
-                className="w-full h-[60vh] md:h-[70vh] overflow-hidden border-2 border-gray-200 rounded-lg bg-gray-50 relative"
+                className="w-full h-[60vh] md:h-[70vh] lg:h-[75vh] xl:h-[80vh] overflow-auto border-2 border-gray-200 rounded-lg bg-gray-50 relative"
                 onMouseDown={isMobile ? handleMouseDown : undefined}
                 onMouseMove={isMobile ? handleMouseMove : undefined}
                 onMouseUp={isMobile ? handleMouseUp : undefined}
@@ -190,7 +190,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                 style={isMobile ? { cursor: isDragging ? 'grabbing' : 'grab' } : {}}
             >
                 <div
-                    className="absolute inset-0 flex flex-col items-center justify-center"
+                    className="w-full min-h-full flex flex-col items-center justify-start py-4"
                     style={{
                         transform: `scale(${zoom}) translate(${translate.x / zoom}px, ${translate.y / zoom}px)`,
                         transformOrigin: 'center center',
@@ -229,7 +229,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                             <span className="text-gray-600">Reservado</span>
                         </div>
                     </div>
-                    <div className="w-full grid gap-1 items-center" style={{ gridTemplateColumns: 'repeat(40, 1fr)', gridTemplateRows: 'repeat(8, auto) 8px repeat(10, auto)' }}>
+                    <div className="w-full grid gap-1 items-center" style={{ gridTemplateColumns: 'repeat(40, 1fr)', gridTemplateRows: 'repeat(8, minmax(auto, 1fr)) 8px repeat(10, minmax(auto, 1fr))' }}>
                         {useMemo(() => Array.from({ length: 19 }).map((_, rowIdx) => {
                             if (rowIdx === 8) {
                                 return (

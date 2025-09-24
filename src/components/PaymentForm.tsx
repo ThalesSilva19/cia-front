@@ -107,7 +107,7 @@ const PaymentForm = () => {
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
                         Finalizar Pagamento
                     </h1>
                     <p className="text-lg text-gray-600">
@@ -118,7 +118,7 @@ const PaymentForm = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Column - Seat Selection */}
                     <div className="bg-white rounded-2xl shadow-xl p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
                             Ingressos Selecionados
                         </h2>
 
