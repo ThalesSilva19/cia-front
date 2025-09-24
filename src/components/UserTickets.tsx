@@ -61,30 +61,7 @@ const UserTickets = () => {
     };
 
     return (
-        <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-pink-50">
-            <div className="h-screen flex flex-col">
-                <header className="text-center py-8 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-                    <div className="flex justify-between items-center mb-4">
-                        <div></div>
-                        <h1 className="text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight text-center">
-                            Meus Ingressos
-                        </h1>
-                        <div className="flex space-x-4">
-                            <Link
-                                href="/"
-                                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
-                            >
-                                Voltar
-                            </Link>
-                            <LogoutButton />
-                        </div>
-                    </div>
-                    <p className="text-lg text-gray-500">
-                        Visualize todos os seus ingressos reservados
-                    </p>
-                </header>
-
-                <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-6">
                     <div className="max-w-4xl mx-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center h-64">
@@ -163,9 +140,7 @@ const UserTickets = () => {
                             </div>
                         )}
                     </div>
-                </div>
-            </div>
-        </main>
+        </div>
     );
 };
 
