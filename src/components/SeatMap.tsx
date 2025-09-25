@@ -73,14 +73,24 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
         const seat = seatMap.get(seatId);
         console.log('Seat found:', seat); // Debug log
 
-        // Permite clicar se o assento estiver disponível ou pré-reservado pelo usuário
-        if (seat && (seat.status === 'available' || (seat.status === 'pre-reserved' && isSeatPreReserved(seat.code)))) {
+        // Permite clicar se:
+        // 1. O assento estiver disponível
+        // 2. O assento estiver pré-reservado pelo usuário atual
+        // 3. O assento estiver selecionado (para permitir desseleção)
+        const isSelected = selectedSeats.includes(seatId);
+        const isClickable = seat && (
+            seat.status === 'available' || 
+            (seat.status === 'pre-reserved' && isSeatPreReserved(seat.code)) ||
+            isSelected // Permite desseleção mesmo se o status mudou
+        );
+
+        if (isClickable) {
             console.log('Toggling seat:', seatId); // Debug log
             toggleSeat(seatId);
         } else {
-            console.log('Seat not clickable:', seatId, 'Status:', seat?.status, 'IsPreReserved:', seat ? isSeatPreReserved(seat.code) : false);
+            console.log('Seat not clickable:', seatId, 'Status:', seat?.status, 'IsPreReserved:', seat ? isSeatPreReserved(seat.code) : false, 'IsSelected:', isSelected);
         }
-    }, [seatMap, toggleSeat, isSeatPreReserved]);
+    }, [seatMap, toggleSeat, isSeatPreReserved, selectedSeats]);
 
     // Funções de zoom
     const handleZoomIn = useCallback(() => {
