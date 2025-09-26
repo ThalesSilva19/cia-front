@@ -60,7 +60,7 @@ export default function PaymentSuccessPage() {
                                         </li>
                                         <li className="flex items-start">
                                             <span className="text-blue-600 mr-2">•</span>
-                                            <span>Após validação, você receberá o ingresso por <strong>email</strong></span>
+                                            <span>Após validação, o ingresso estará disponível em <strong>&quot;Meus Ingressos&quot;</strong></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -81,10 +81,6 @@ export default function PaymentSuccessPage() {
                                         <li className="flex items-start">
                                             <span className="text-green-600 mr-2">•</span>
                                             <span>Seus ingressos aparecerão em <strong>&quot;Meus Ingressos&quot;</strong> após validação</span>
-                                        </li>
-                                        <li className="flex items-start">
-                                            <span className="text-green-600 mr-2">•</span>
-                                            <span>Você receberá um <strong>email com o ingresso</strong> em PDF</span>
                                         </li>
                                         <li className="flex items-start">
                                             <span className="text-green-600 mr-2">•</span>
