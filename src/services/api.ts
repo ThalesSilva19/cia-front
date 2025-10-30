@@ -217,6 +217,21 @@ export const seatService = {
             throw error;
         }
     },
+
+    async getSeatInfo(seatCode: string): Promise<{
+        is_half_price: boolean;
+        user_name: string;
+        status_code: string;
+        seat_code: string;
+    }> {
+        try {
+            const response = await api.get(`/seats/info/${encodeURIComponent(seatCode)}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar informações do assento:', error);
+            throw error;
+        }
+    },
 };
 
 export const adminService = {
@@ -250,11 +265,13 @@ export const adminService = {
         }
     },
 
-    async validateQRCode(qrCodeString: string): Promise<{ message: string }> {
+    async validateQRCode(params: { hash_value: string; seat_code: string }): Promise<{ message: string }> {
         try {
-            const response = await api.post('/admin/validate-qr-code', {
-                qr_code_string: qrCodeString
-            });
+            const query = new URLSearchParams({
+                hash_value: params.hash_value,
+                seat_code: params.seat_code,
+            }).toString();
+            const response = await api.post(`/admin/validate-qr-code?${query}`);
             return response.data;
         } catch (error) {
             console.error('Erro ao validar QR code:', error);
