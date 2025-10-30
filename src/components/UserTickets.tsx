@@ -106,7 +106,7 @@ const UserTickets = () => {
 
                             <div className="grid gap-4">
                                 {tickets.map((ticket) => (
-                                    <div key={ticket.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div key={`ticket-${ticket.id}-${ticket.code}`} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                                         <div className="flex justify-between items-start">
                                             <div className="flex items-center space-x-4">
                                                 <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -133,6 +133,29 @@ const UserTickets = () => {
                                                 </p>
                                             </div>
                                         </div>
+
+                                        {/* QR Code para ingressos que possuem */}
+                                        {ticket.qr_code && (
+                                            <div className="border-t border-gray-200 pt-4 mt-4">
+                                                <div className="text-center">
+                                                    <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                                                        Código QR do Ingresso
+                                                    </h4>
+                                                    <div className="flex justify-center">
+                                                        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-100 w-64 h-64 flex items-center justify-center">
+                                                            <img 
+                                                                src={ticket.qr_code.startsWith('data:') ? ticket.qr_code : `data:image/png;base64,${ticket.qr_code}`}
+                                                                alt={`QR Code do Ingresso ${ticket.code}`}
+                                                                className="max-w-full max-h-full object-contain"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-3">
+                                                        Apresente este código na entrada do evento
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

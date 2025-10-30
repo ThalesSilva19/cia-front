@@ -5,6 +5,8 @@ import { adminService, UserReservation } from '@/services/api';
 import LogoutButton from './LogoutButton';
 import Link from 'next/link';
 import { useToast } from '@/contexts/ToastContext';
+import QRCodeScanner from './QRCodeScanner';
+import QRValidationModal from './QRValidationModal';
 
 const AdminPanel = () => {
     const [pendingReservations, setPendingReservations] = useState<UserReservation[]>([]);
@@ -12,6 +14,11 @@ const AdminPanel = () => {
     const [error, setError] = useState<string | null>(null);
     const [processingSeats, setProcessingSeats] = useState<Set<string>>(new Set());
     const { showSuccess, showError } = useToast();
+
+    // QR Code Scanner states
+    const [scannerOpen, setScannerOpen] = useState(false);
+    const [validationOpen, setValidationOpen] = useState(false);
+    const [scannedQRData, setScannedQRData] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPendingReservations = async () => {
@@ -116,6 +123,33 @@ const AdminPanel = () => {
         }
     };
 
+    const handleScanQRCode = () => {
+        setScannerOpen(true);
+    };
+
+    const handleScanSuccess = (data: string) => {
+        setScannedQRData(data);
+        setScannerOpen(false);
+        setValidationOpen(true);
+    };
+
+    const handleValidateQRCode = async (qrCodeString: string) => {
+        try {
+            const result = await adminService.validateQRCode(qrCodeString);
+            showSuccess('Ingresso Validado', 'O ingresso foi validado com sucesso!');
+            await refreshData();
+            return result;
+        } catch (err: any) {
+            console.error('Erro ao validar QR code:', err);
+            throw new Error(err.response?.data?.detail || 'Erro ao validar ingresso');
+        }
+    };
+
+    const handleCloseValidation = () => {
+        setValidationOpen(false);
+        setScannedQRData(null);
+    };
+
     return (
         <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-pink-50">
             <div className="h-screen flex flex-col">
@@ -126,6 +160,15 @@ const AdminPanel = () => {
                             Painel Administrativo
                         </h1>
                         <div className="flex space-x-4">
+                            <button
+                                onClick={() => setScannerOpen(true)}
+                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                            >
+                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1 январь a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                </svg>
+                                Scanner QR
+                            </button>
                             <Link
                                 href="/"
                                 className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
@@ -263,6 +306,21 @@ const AdminPanel = () => {
                     </div>
                 </div>
             </div>
+
+            {/* QR Code Scanner */}
+            <QRCodeScanner
+                isOpen={scannerOpen}
+                onClose={() => setScannerOpen(false)}
+                onScanSuccess={handleScanSuccess}
+            />
+
+            {/* QR Validation Modal */}
+            <QRValidationModal
+                isOpen={validationOpen}
+                onClose={handleCloseValidation}
+                qrData={scannedQRData}
+                onValidate={handleValidateQRCode}
+            />
         </main>
     );
 };

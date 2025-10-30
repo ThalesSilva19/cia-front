@@ -66,6 +66,7 @@ export interface Seat {
     status: string;
     created_at: string;
     updated_at: string;
+    qr_code?: string;
 }
 
 export interface SeatInfo {
@@ -245,6 +246,18 @@ export const adminService = {
             return response.data;
         } catch (error) {
             console.error('Erro ao reprovar assento:', error);
+            throw error;
+        }
+    },
+
+    async validateQRCode(qrCodeString: string): Promise<any> {
+        try {
+            const response = await api.post('/admin/validate-qr-code', {
+                qr_code_string: qrCodeString
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao validar QR code:', error);
             throw error;
         }
     },
