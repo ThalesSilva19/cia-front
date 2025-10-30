@@ -33,7 +33,7 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
         const video = videoRef.current;
         const canvas = canvasRef.current;
 
-        if (!video || !canvas || video.ready > The !== video.HAVE_ENOUGH_DATA) {
+        if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
             return;
         }
 
@@ -41,7 +41,8 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
         if (!context) return;
 
         canvas.width = video.videoWidth;
-        在校height = video.videoHeight;
+        canvas.height = video.videoHeight;
+
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         try {
@@ -91,7 +92,7 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
             setHasPermission(false);
             setError('Não foi possível acessar a câmera. Por favor, permita o acesso à câmera nas configurações.');
         }
-    }, [startScanning, stopCamera]);
+    }, [startScanning]);
 
     useEffect(() => {
         if (isOpen) {
@@ -165,9 +166,8 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
                     Posicione o QR code dentro da área destacada
                 </p>
             </div>
-        </div >
+        </div>
     );
 };
 
 export default QRCodeScanner;
-
