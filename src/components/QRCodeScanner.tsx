@@ -89,31 +89,66 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
                 video: { facingMode: 'environment' } // Usar câmera traseira
             });
 
-            if (videoRef.current) {
-                videoRef.current.srcObject = stream;
+            const video = videoRef.current;
+            if (!video) {
+                stream.getTracks().forEach(track => track.stop());
+                return;
+            }
 
-                // Aguardar o vídeo estar pronto antes de iniciar o scan
-                videoRef.current.onloadedmetadata = () => {
-                    if (videoRef.current) {
-                        videoRef.current.play()
-                            .then(() => {
-                                setHasPermission(true);
-                                setError(null);
-                                startScanning();
-                            })
-                            .catch((err) => {
-                                console.error('Erro ao reproduzir vídeo:', err);
-                                setHasPermission(false);
-                                setError('Erro ao iniciar a câmera. Tente novamente.');
-                            });
+            // Configurar o stream no vídeo
+            video.srcObject = stream;
+            video.setAttribute('playsinline', 'true');
+            video.setAttribute('autoplay', 'true');
+            video.setAttribute('muted', 'true'); // Necessário para autoplay em alguns browsers
+
+            // Função para iniciar quando o vídeo estiver pronto
+            const handleVideoReady = async () => {
+                if (!video || !video.srcObject) return;
+
+                try {
+                    await video.play();
+                    setHasPermission(true);
+                    setError(null);
+
+                    // Pequeno delay para garantir que o vídeo está reproduzindo
+                    setTimeout(() => {
+                        if (video && !video.paused && video.readyState >= 2) {
+                            startScanning();
+                        }
+                    }, 200);
+                } catch (err) {
+                    console.error('Erro ao reproduzir vídeo:', err);
+                    setHasPermission(false);
+                    setError('Erro ao iniciar a câmera. Tente novamente.');
+                    stream.getTracks().forEach(track => track.stop());
+                }
+            };
+
+            // Múltiplos eventos e verificação imediata
+            video.onloadedmetadata = handleVideoReady;
+            video.oncanplay = handleVideoReady;
+            video.onplaying = () => {
+                setHasPermission(true);
+                setError(null);
+                startScanning();
+            };
+
+            // Verificar se já está pronto imediatamente
+            if (video.readyState >= 2) {
+                handleVideoReady();
+            } else {
+                // Timeout de fallback caso os eventos não disparem
+                setTimeout(() => {
+                    if (video && video.srcObject && video.readyState >= 2) {
+                        handleVideoReady();
                     }
-                };
+                }, 500);
             }
         } catch (err) {
             console.error('Erro ao acessar câmera:', err);
             setHasPermission(false);
             const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
-            if (errorMessage.includes('permission')) {
+            if (errorMessage.includes('permission') || errorMessage.includes('Permission')) {
                 setError('Permissão de câmera negada. Por favor, permita o acesso à câmera nas configurações.');
             } else if (errorMessage.includes('not found') || errorMessage.includes('no camera')) {
                 setError('Câmera não encontrada. Verifique se seu dispositivo possui uma câmera.');
