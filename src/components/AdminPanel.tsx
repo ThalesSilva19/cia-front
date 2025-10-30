@@ -153,37 +153,37 @@ const AdminPanel = () => {
     return (
         <main className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-pink-50">
             <div className="h-screen flex flex-col">
-                <header className="text-center py-8 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-                    <div className="flex justify-between items-center mb-4">
-                        <div></div>
-                        <h1 className="text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight">
+                <header className="text-center py-4 sm:py-8 bg-white/80 backdrop-blur-sm border-b border-gray-200 px-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+                        <h1 className="text-2xl sm:text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight order-1">
                             Painel Administrativo
                         </h1>
-                        <div className="flex space-x-4">
+                        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 order-2">
                             <button
                                 onClick={() => setScannerOpen(true)}
-                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                                className="bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm sm:text-base"
                             >
-                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1 январь a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                 </svg>
-                                Scanner QR
+                                <span className="hidden sm:inline">Scanner QR</span>
+                                <span className="sm:hidden">QR</span>
                             </button>
                             <Link
                                 href="/"
-                                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                                className="bg-gray-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
                             >
                                 Voltar
                             </Link>
                             <LogoutButton />
                         </div>
                     </div>
-                    <p className="text-lg text-gray-500">
+                    <p className="text-sm sm:text-lg text-gray-500">
                         Gerencie assentos pendentes de aprovação
                     </p>
                 </header>
 
-                <div className="flex-1 overflow-auto p-6">
+                <div className="flex-1 overflow-auto p-3 sm:p-6">
                     <div className="max-w-7xl mx-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center h-64">
@@ -220,33 +220,33 @@ const AdminPanel = () => {
                                 </button>
                             </div>
                         ) : (
-                            <div className="bg-white rounded-2xl shadow-xl p-6">
-                                <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-2xl font-bold text-gray-900">
+                            <div className="bg-white rounded-2xl shadow-xl p-3 sm:p-6">
+                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                                         Reservas Pendentes ({pendingReservations.length})
                                     </h2>
                                     <button
                                         onClick={refreshData}
-                                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
                                     >
                                         Atualizar
                                     </button>
                                 </div>
 
-                                <div className="space-y-6">
+                                <div className="space-y-4 sm:space-y-6">
                                     {pendingReservations.map((reservation) => (
-                                        <div key={reservation.user_name} className="border border-gray-200 rounded-lg p-6">
-                                            <div className="flex justify-between items-center mb-4">
+                                        <div key={reservation.user_name} className="border border-gray-200 rounded-lg p-4 sm:p-6">
+                                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                                                 <div>
-                                                    <h3 className="text-lg font-semibold text-gray-900">
+                                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                                                         {reservation.user_name}
                                                     </h3>
                                                     <p className="text-sm text-gray-600">
                                                         {reservation.seats.length} assento{reservation.seats.length > 1 ? 's' : ''}
                                                     </p>
                                                 </div>
-                                                <div className="text-right">
-                                                    <div className="text-lg font-bold text-green-600">
+                                                <div className="text-left sm:text-right">
+                                                    <div className="text-base sm:text-lg font-bold text-green-600">
                                                         {formatPrice(calculateTotalPrice(reservation.seats))}
                                                     </div>
                                                     <div className="text-xs text-gray-500">
@@ -255,7 +255,7 @@ const AdminPanel = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                                                 {reservation.seats.map((seat) => (
                                                     <div key={seat.code} className="bg-gray-50 rounded-lg p-4">
                                                         <div className="flex justify-between items-center mb-3">
