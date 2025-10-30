@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { seatService, Seat } from '@/services/api';
-import LogoutButton from './LogoutButton';
 import Link from 'next/link';
 
 const UserTickets = () => {
@@ -143,6 +142,7 @@ const UserTickets = () => {
                                                     </h4>
                                                     <div className="flex justify-center">
                                                         <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-100 w-64 h-64 flex items-center justify-center">
+                                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                                             <img 
                                                                 src={ticket.qr_code.startsWith('data:') ? ticket.qr_code : `data:image/png;base64,${ticket.qr_code}`}
                                                                 alt={`QR Code do Ingresso ${ticket.code}`}

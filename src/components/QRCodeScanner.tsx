@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import jsQR from 'jsqr';
 
 interface QRCodeScannerProps {
@@ -16,19 +16,65 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    useEffect(() => {
-        if (isOpen) {
-            initCamera();
-        } else {
-            stopCamera();
+    const stopCamera = useCallback(() => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
         }
 
-        return () => {
-            stopCamera();
-        };
-    }, [isOpen]);
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+    }, []);
 
-    const initCamera = async () => {
+    const scanQRCode = useCallback(() => {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
+
+        if (!video || !canvas || video.ready > The !== video.HAVE_ENOUGH_DATA) {
+            return;
+        }
+
+        const context = canvas.getContext('2d');
+        if (!context) return;
+
+        canvas.width = video.videoWidth;
+        在校height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        try {
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code && code.data) {
+                console.log('QR Code detectado:', code.data);
+                onScanSuccess(code.data);
+                if (video.srcObject) {
+                    const stream = video.srcObject as MediaStream;
+                    stream.getTracks().forEach(track => track.stop());
+                    video.srcObject = null;
+                }
+                if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                }
+            }
+        } catch (err) {
+            console.error('Erro ao processar QR code:', err);
+        }
+    }, [onScanSuccess]);
+
+    const startScanning = useCallback(() => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+
+        intervalRef.current = setInterval(() => {
+            scanQRCode();
+        }, 500);
+    }, [scanQRCode]);
+
+    const initCamera = useCallback(async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: 'environment' } // Usar câmera traseira
@@ -45,68 +91,19 @@ const QRCodeScanner = ({ isOpen, onClose, onScanSuccess }: QRCodeScannerProps) =
             setHasPermission(false);
             setError('Não foi possível acessar a câmera. Por favor, permita o acesso à câmera nas configurações.');
         }
-    };
+    }, [startScanning, stopCamera]);
 
-    const startScanning = () => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-
-        intervalRef.current = setInterval(() => {
-            scanQRCode();
-        }, 500);
-    };
-
-    const scanQRCode = () => {
-        const video = videoRef.current;
-        const canvas = canvasRef.current;
-
-        if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
-            return;
+    useEffect(() => {
+        if (isOpen) {
+            initCamera();
+        } else {
+            stopCamera();
         }
 
-        const context = canvas.getContext('2d');
-        if (!context) return;
-
-        // Definir tamanho do canvas igual ao vídeo
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        // Desenhar frame atual do vídeo no canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        try {
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            decodeQRCode(imageData);
-        } catch (err) {
-            console.error('Erro ao processar QR code:', err);
-        }
-    };
-
-    const decodeQRCode = (imageData: ImageData) => {
-        try {
-            const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-            if (code && code.data) {
-                console.log('QR Code detectado:', code.data);
-                onScanSuccess(code.data);
-                stopCamera();
-            }
-        } catch (err) {
-            console.error('Erro ao processar QR code:', err);
-        }
-    };
-
-    const stopCamera = () => {
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-            videoRef.current.srcObject = null;
-        }
-
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-        }
-    };
+        return () => {
+            stopCamera();
+        };
+    }, [isOpen, initCamera, stopCamera]);
 
     const handleClose = () => {
         stopCamera();

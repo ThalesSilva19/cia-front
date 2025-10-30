@@ -18,7 +18,7 @@ const QRValidationModal = ({ isOpen, onClose, qrData, onValidate }: QRValidation
     const parseQRData = () => {
         try {
             return JSON.parse(qrData);
-        } catch (err) {
+        } catch {
             return null;
         }
     };
@@ -35,8 +35,9 @@ const QRValidationModal = ({ isOpen, onClose, qrData, onValidate }: QRValidation
             setTimeout(() => {
                 onClose();
             }, 1000);
-        } catch (err: any) {
-            setError(err.message || 'Erro ao validar ingresso');
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : 'Erro ao validar ingresso';
+            setError(errorMessage);
         } finally {
             setIsValidating(false);
         }

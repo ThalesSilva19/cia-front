@@ -123,25 +123,25 @@ const AdminPanel = () => {
         }
     };
 
-    const handleScanQRCode = () => {
-        setScannerOpen(true);
-    };
-
     const handleScanSuccess = (data: string) => {
         setScannedQRData(data);
         setScannerOpen(false);
         setValidationOpen(true);
     };
 
-    const handleValidateQRCode = async (qrCodeString: string) => {
+    const handleValidateQRCode = async (qrCodeString: string): Promise<void> => {
         try {
-            const result = await adminService.validateQRCode(qrCodeString);
+            await adminService.validateQRCode(qrCodeString);
             showSuccess('Ingresso Validado', 'O ingresso foi validado com sucesso!');
             await refreshData();
-            return result;
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Erro ao validar QR code:', err);
-            throw new Error(err.response?.data?.detail || 'Erro ao validar ingresso');
+            const errorMessage = err instanceof Error
+                ? err.message
+                : (err && typeof err === 'object' && 'response' in err && err.response && typeof err.response === 'object' && 'data' in err.response && err.response.data && typeof err.response.data === 'object' && 'detail' in err.response.data && typeof err.response.data.detail === 'string'
+                    ? err.response.data.detail
+                    : 'Erro ao validar ingresso');
+            throw new Error(errorMessage);
         }
     };
 

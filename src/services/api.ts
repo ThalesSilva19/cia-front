@@ -250,7 +250,7 @@ export const adminService = {
         }
     },
 
-    async validateQRCode(qrCodeString: string): Promise<any> {
+    async validateQRCode(qrCodeString: string): Promise<{ message: string }> {
         try {
             const response = await api.post('/admin/validate-qr-code', {
                 qr_code_string: qrCodeString
