@@ -65,7 +65,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
             return false;
         }
 
-        return status === 'reserved' || status === 'occupied' || status === 'pre-reserved';
+        return status === 'reserved' || status === 'occupied' || status === 'pre-reserved' || status === 'used';
     }, [getSeatStatus, isSeatPreReserved]);
 
     const handleSeatClick = useCallback((seatId: string) => {
@@ -77,11 +77,12 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
         // 1. O assento estiver disponível
         // 2. O assento estiver pré-reservado pelo usuário atual
         // 3. O assento estiver selecionado (para permitir desseleção)
+        // Não permite clicar em assentos used, reserved, occupied ou pre-reserved de outros usuários
         const isSelected = selectedSeats.includes(seatId);
         const isClickable = seat && (
-            seat.status === 'available' || 
+            (seat.status === 'available') ||
             (seat.status === 'pre-reserved' && isSeatPreReserved(seat.code)) ||
-            isSelected // Permite desseleção mesmo se o status mudou
+            (isSelected && seat.status !== 'used' && seat.status !== 'reserved' && seat.status !== 'occupied') // Permite desseleção apenas se não for usado/reservado/ocupado
         );
 
         if (isClickable) {
@@ -238,6 +239,10 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                             <div className="w-3 h-3 bg-red-400 rounded opacity-60"></div>
                             <span className="text-gray-600">Reservado</span>
                         </div>
+                        <div className="flex items-center gap-1">
+                            <div className="w-3 h-3 bg-blue-400 rounded opacity-70"></div>
+                            <span className="text-gray-600">Usado</span>
+                        </div>
                     </div>
                     <div className="w-full grid gap-1 items-center" style={{ gridTemplateColumns: 'repeat(40, 1fr)', gridTemplateRows: 'repeat(8, minmax(auto, 1fr)) 8px repeat(10, minmax(auto, 1fr))' }}>
                         {useMemo(() => Array.from({ length: 19 }).map((_, rowIdx) => {
@@ -293,13 +298,15 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                                 const seatStatus = getSeatStatus(seat);
 
                                 // Defina o tipo do botão
-                                let seatType: "selected" | "default" | "occupied" | "pre-reserved" = "default";
+                                let seatType: "selected" | "default" | "occupied" | "pre-reserved" | "used" = "default";
                                 if (isOccupied) {
                                     if (seatStatus === 'pre-reserved' && isSeatPreReserved(seatId)) {
                                         // Se é pré-reservado pelo usuário atual, tratá-lo como disponível
                                         seatType = "default";
                                     } else if (seatStatus === 'pre-reserved') {
                                         seatType = "pre-reserved";
+                                    } else if (seatStatus === 'used') {
+                                        seatType = "used";
                                     } else {
                                         seatType = "occupied";
                                     }
@@ -313,6 +320,9 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
 
                                 if (seatType === "selected") {
                                     buttonClasses += " bg-blue-500 text-white hover:bg-blue-600";
+                                } else if (seatType === "used") {
+                                    // used fica azul e não clicável
+                                    buttonClasses += " bg-blue-400 text-white cursor-not-allowed opacity-70";
                                 } else if (seatType === "occupied") {
                                     // reserved e occupied ficam vermelhos
                                     buttonClasses += " bg-red-400 text-white cursor-not-allowed opacity-60";
@@ -337,7 +347,7 @@ const SeatMap = memo(({ seats }: SeatMapProps) => {
                                         }}
                                         title={
                                             isOccupied
-                                                ? `Assento ${seatId} - ${seatStatus === 'reserved' ? 'Reservado' : seatStatus === 'pre-reserved' ? 'Pré-reservado' : 'Ocupado'}`
+                                                ? `Assento ${seatId} - ${seatStatus === 'reserved' ? 'Reservado' : seatStatus === 'pre-reserved' ? 'Pré-reservado' : seatStatus === 'used' ? 'Usado' : 'Ocupado'}`
                                                 : `Assento ${seatId} disponível${seatStatus === 'pre-reserved' && isSeatPreReserved(seatId) ? ' (pré-reservado por você)' : ''}`
                                         }
                                     >
